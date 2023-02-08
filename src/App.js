@@ -1,9 +1,8 @@
 import logo from './resources/sneakers.png';
 import cartIcon from './resources/shopping-cart.png';
-import data from './Data';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import Homepage from './pages/Homepage';
-import Productpage from './pages/Productpage';
+import Homepage from './pages/Homepage.js';
+import Productpage from './pages/Productpage.js';
 function App() {
   return (
     <>
