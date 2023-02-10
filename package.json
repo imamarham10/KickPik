@@ -1,6 +1,7 @@
 {
   "name": "kickpik",
   "version": "0.1.0",
+  "proxy": "http://localhost:4000",
   "private": true,
   "type": "module",
   "dependencies": {
@@ -11,8 +12,10 @@
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
+    "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.0.1",
     "react": "^18.2.0",
@@ -22,7 +25,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node app.js",
+    "postinstall": "npm run build",
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

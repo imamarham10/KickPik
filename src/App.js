@@ -10,9 +10,9 @@ function App() {
         <div>
           <header className="header">
             <div className="logo">
-              <span className="brand-icon">
+              <span>
                 <Link to="/">
-                  <img src={logo} alt="logo" />
+                  <img src={logo} alt="logo" className="brand-icon" />
                 </Link>
               </span>
               <span className="brand-link">

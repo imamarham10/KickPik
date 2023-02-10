@@ -114,3 +114,28 @@ a {
   background-color: #092e20;
   color: white;
 }
+
+/* Media Queries (max-width = 480px) */
+@media screen and (max-width: 480px) {
+  body {
+    padding: 10px 50px 10px 50px;
+  }
+  .header {
+    padding-left: 0;
+    padding-right: 0px;
+    font-size: 0px;
+  }
+  .logo {
+    margin-left: 0px;
+  }
+  .brand-icon {
+    width: 50px;
+    height: 50px;
+  }
+  .brand-name {
+    font-size: 26px;
+  }
+  .cart-text {
+    display: none;
+  }
+}
