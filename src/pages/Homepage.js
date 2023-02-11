@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Rating from '../components/Rating.js';
+import data from '../Data.js';
 export default function Homepage() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get('/api/products');
+      console.log(result.data);
       setProducts(result.data);
     };
     fetchData();
@@ -15,7 +18,7 @@ export default function Homepage() {
       <div>
         <h1>Featured Product</h1>
         <div className="products">
-          {products.map((product) => (
+          {data.products.map((product) => (
             <div key={product._id} className="product">
               <div className="product-image">
                 <Link to={`/product/${product.name}`}>
@@ -35,6 +38,12 @@ export default function Homepage() {
                 </div>
                 <div className="product-gender">
                   <span>{product.gender}</span>
+                </div>
+                <div>
+                  <Rating
+                    rating={product.rating}
+                    numReviews={product.numberOfReviews}
+                  />
                 </div>
                 <div>
                   <button className="product-addToCart-button">
