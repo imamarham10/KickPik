@@ -1,7 +1,6 @@
 {
   "name": "kickpik",
   "version": "0.1.0",
-  "proxy": "http://localhost:4000",
   "private": true,
   "type": "module",
   "dependencies": {
@@ -17,6 +16,7 @@
     "express-async-handler": "^1.2.0",
     "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^9.0.0",
+    "ky": "^0.33.2",
     "mongodb": "^5.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -9,12 +9,12 @@ export default function Socials() {
           to={'https://www.linkedin.com/in/arham-imam-100800/'}
           target="_blank"
         >
-          <i class="fab fa-linkedin"></i>
+          <i className="fab fa-linkedin"></i>
         </Link>
       </li>
       <li>
         <Link to={'https://www.github.com/imamarham10/kickpik'} target="_blank">
-          <i class="fab fa-github"></i>
+          <i className="fab fa-github"></i>
         </Link>
       </li>
     </ul>

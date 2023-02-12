@@ -1,6 +1,13 @@
 import express from 'express';
 import data from './server/Data.js';
+import cors from 'cors';
 const app = express();
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+  })
+);
 
 app.get('/api/products', (req, res) => {
   console.log(data.products);

@@ -1,25 +1,24 @@
-import axios from 'axios';
+import ky from 'ky';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import Product from '../components/Product.js';
-import Rating from '../components/Rating.js';
-import data from '../Data.js';
 export default function Homepage() {
   const [products, setProducts] = useState([]);
+  const fetchData = () => {
+    ky.get('http://localhost:5000/api/products')
+      .then((res) => res.json())
+      .then((res) => setProducts(res));
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get('/api/products');
-      console.log(result.data);
-      setProducts(result.data);
-    };
     fetchData();
   }, []);
+
   return (
     <>
       <div>
         <h1>Featured Product</h1>
         <div className="products">
-          {data.products.map((product) => (
+          {products?.map((product) => (
             <Product key={product._id} product={product} />
           ))}
         </div>
