@@ -42,7 +42,7 @@ function App() {
           <main>
             <Routes>
               <Route path="/" element={<Homepage />} />
-              <Route path="/product/:name" element={<Productpage />} />
+              <Route path="/product/id/:id" element={<Productpage />} />
             </Routes>
           </main>
           <footer className="footer">

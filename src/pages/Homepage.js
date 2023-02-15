@@ -1,6 +1,5 @@
 import ky from 'ky';
-import React, { useEffect, useReducer, useState } from 'react';
-import logger from 'use-reducer-logger';
+import React, { useEffect, useReducer } from 'react';
 import Product from '../components/Product.js';
 
 const reducer = (state, action) => {
@@ -16,16 +15,16 @@ const reducer = (state, action) => {
   }
 };
 export default function Homepage() {
-  const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
     error: '',
   });
   //const [products, setProducts] = useState([]);
-  const fetchData = () => {
+  const fetchAllProducts = () => {
     dispatch({ type: 'FETCH_REQUEST' });
     try {
-      ky.get('http://localhost:5000/api/products')
+      ky.get(`http://localhost:5000/api/products`)
         .then((res) => res.json())
         .then((res) => dispatch({ type: 'FETCH_SUCCESS', payload: res }));
     } catch (error) {
@@ -33,7 +32,7 @@ export default function Homepage() {
     }
   };
   useEffect(() => {
-    fetchData();
+    fetchAllProducts();
   }, []);
 
   return (
