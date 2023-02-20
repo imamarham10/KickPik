@@ -19,10 +19,11 @@
     "ky": "^0.33.2",
     "mongodb": "^5.0.1",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
-    "use-reducer-logger": "^1.0.2",
+    "tw-elements": "^1.0.0-alpha13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

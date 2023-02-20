@@ -1,14 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import ky from 'ky';
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import ErrorMessage from '../components/Message.js';
 import Rating from '../components/Rating.js';
-
+import { getError } from '../util.js';
+import { Store } from '../Store.js';
+import axios from 'axios';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
     case 'FETCH_SUCCESS':
-      return { ...state, loading: false, product: action.payload };
+      return { ...state, product: action.payload, loading: false };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     default:
@@ -24,26 +28,47 @@ export default function Productpage() {
     error: '',
   });
   const [qty, setQty] = useState(1);
-
   const fetchProduct = () => {
     dispatch({ type: 'FETCH_REQUEST' });
     try {
       ky.get(`http://localhost:5000/api/product/id/${id}`)
         .then((res) => res.json())
         .then((res) => dispatch({ type: 'FETCH_SUCCESS', payload: res }));
-    } catch (error) {
-      dispatch({ type: 'FETCH_FAIL', payload: error.message });
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
     }
   };
   useEffect(() => {
     fetchProduct();
   }, [id]);
+  //console.log(getError(error));
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(
+      `http://localhost:5000/api/products/${product._id}`
+    );
+    console.log(data);
+    if (data.countInStock < quantity) {
+      window.alert('Sorry. Product is out of stock');
+      return;
+    }
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity },
+    });
+  };
   return (
     <div>
       {loading ? (
         <div>Loading...</div>
       ) : error ? (
-        <div>{error}</div>
+        <div>
+          <ErrorMessage variant="danger">{error}</ErrorMessage>
+        </div>
       ) : (
         <div className="productpage-container">
           <div>
@@ -119,7 +144,10 @@ export default function Productpage() {
                     </button>
                   </div>
                   <div>
-                    <button className="productpage-addToCart">
+                    <button
+                      className="productpage-addToCart"
+                      onClick={addToCartHandler}
+                    >
                       <strong>Add to Cart</strong>
                     </button>
                   </div>

@@ -4,8 +4,12 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Homepage from './pages/Homepage.js';
 import Productpage from './pages/Productpage.js';
 import Socials from './components/Socials.js';
+import { useContext } from 'react';
+import { Store } from './Store.js';
 
 function App() {
+  const { state } = useContext(Store);
+  const { cart } = state;
   return (
     <>
       <BrowserRouter>
@@ -35,6 +39,11 @@ function App() {
                     <img src={cartIcon} alt="cart" />
                   </div>
                   <div className="cart-text">Cart</div>
+                  {cart.cartItems.length > 0 && (
+                    <div className="cart-cartItems">
+                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    </div>
+                  )}
                 </div>
               </Link>
             </div>
