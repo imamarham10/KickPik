@@ -6,6 +6,7 @@ import Productpage from './pages/Productpage.js';
 import Socials from './components/Socials.js';
 import { useContext } from 'react';
 import { Store } from './Store.js';
+import CartPage from './pages/CartPage.js';
 
 function App() {
   const { state } = useContext(Store);
@@ -52,6 +53,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Homepage />} />
               <Route path="/product/id/:id" element={<Productpage />} />
+              <Route path="/cart" element={<CartPage />} />
             </Routes>
           </main>
           <footer className="footer">

@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import ky from 'ky';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ErrorMessage from '../components/Message.js';
 import Rating from '../components/Rating.js';
 import { getError } from '../util.js';
 import { Store } from '../Store.js';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -19,7 +21,9 @@ const reducer = (state, action) => {
       return state;
   }
 };
+
 export default function Productpage() {
+  const navigate = useNavigate();
   const params = useParams();
   const { id } = params;
   const [{ loading, error, product }, dispatch] = useReducer(reducer, {
@@ -51,18 +55,24 @@ export default function Productpage() {
     const { data } = await axios.get(
       `http://localhost:5000/api/products/${product._id}`
     );
-    console.log(data);
+    // console.log(data);
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');
       return;
     }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...product, quantity },
-    });
+    ctxDispatch(
+      {
+        type: 'CART_ADD_ITEM',
+        payload: { ...product, quantity },
+      },
+      navigate('/cart')
+    );
   };
   return (
     <div>
+      <Helmet>
+        <title>{product.name}</title>
+      </Helmet>
       {loading ? (
         <div>Loading...</div>
       ) : error ? (

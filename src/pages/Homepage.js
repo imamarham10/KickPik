@@ -1,5 +1,6 @@
 import ky from 'ky';
 import React, { useEffect, useReducer } from 'react';
+import { Helmet } from 'react-helmet';
 import Loading from '../components/Loading.js';
 import MessageBox from '../components/Message.js';
 import Product from '../components/Product.js';
@@ -41,6 +42,9 @@ export default function Homepage() {
   return (
     <>
       <div>
+        <Helmet>
+          <title>KickPik</title>
+        </Helmet>
         <h1>Featured Product</h1>
         {loading ? (
           <div>

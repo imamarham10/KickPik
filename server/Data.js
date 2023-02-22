@@ -28,7 +28,7 @@ const data = {
     },
     {
       _id: `3`,
-      name: `CHUCK 70 HI COUNTER CLIMATE GTX 'CONVERSE UTILITY/LIGHT FEILD SURPLUS/NATURAL IVORY`,
+      name: `CHUCK 70 Converse`,
       category: 'Shoes',
       gender: `Men's Shoes`,
       image: '/images/product-3.jpg',
