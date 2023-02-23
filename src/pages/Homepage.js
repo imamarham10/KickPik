@@ -2,6 +2,7 @@ import ky from 'ky';
 import React, { useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet';
 import Loading from '../components/Loading.js';
+import ErrorMessage from '../components/Message.js';
 import MessageBox from '../components/Message.js';
 import Product from '../components/Product.js';
 import { getError } from '../util.js';
@@ -52,7 +53,7 @@ export default function Homepage() {
           </div>
         ) : error ? (
           <div>
-            <MessageBox variant="danger">{error}</MessageBox>
+            <ErrorMessage variant="danger">{error}</ErrorMessage>
           </div>
         ) : (
           <div className="products">

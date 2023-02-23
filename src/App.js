@@ -7,6 +7,7 @@ import Socials from './components/Socials.js';
 import { useContext } from 'react';
 import { Store } from './Store.js';
 import CartPage from './pages/CartPage.js';
+import SigninPage from './pages/SigninPage.js';
 
 function App() {
   const { state } = useContext(Store);
@@ -54,6 +55,7 @@ function App() {
               <Route path="/" element={<Homepage />} />
               <Route path="/product/id/:id" element={<Productpage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/:signin" element={<SigninPage />} />
             </Routes>
           </main>
           <footer className="footer">
