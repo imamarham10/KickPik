@@ -1,8 +1,27 @@
 import express from 'express';
 import data from './server/Data.js';
 import cors from 'cors';
-const app = express();
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+mongoose
+  .connect(
+    `mongodb+srv://kickpik:kickpik@cluster0.kceesjr.mongodb.net/?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => {
+    console.log(`connected to DB`);
+  })
+  .catch((error) => {
+    console.log(error.message);
+  });
+
+const app = express();
 app.use(
   cors({
     origin: 'http://localhost:3000',

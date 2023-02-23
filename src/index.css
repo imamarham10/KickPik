@@ -551,16 +551,16 @@ img.small {
   width: auto;
   background-color: #092e20;
   color: #ddd;
-  border: none;
+  border: 1px solid;
   border-radius: 25px;
   cursor: pointer;
   font-size: 15px;
   font-weight: 600;
 }
 .cartpage-checkout:hover {
-  background-color: #999;
-  border-color: #092e20;
-  color: #092e20;
+  background-color: #ddd;
+  border-color: #000;
+  color: #000;
 }
 
 .button-remove {

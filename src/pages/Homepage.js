@@ -3,7 +3,6 @@ import React, { useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet';
 import Loading from '../components/Loading.js';
 import ErrorMessage from '../components/Message.js';
-import MessageBox from '../components/Message.js';
 import Product from '../components/Product.js';
 import { getError } from '../util.js';
 
