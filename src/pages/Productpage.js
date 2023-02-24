@@ -35,7 +35,7 @@ export default function Productpage() {
   const fetchProduct = () => {
     dispatch({ type: 'FETCH_REQUEST' });
     try {
-      ky.get(`http://localhost:5000/api/product/id/${id}`)
+      ky.get(`http://localhost:5000/api/products/${id}`)
         .then((res) => res.json())
         .then((res) => dispatch({ type: 'FETCH_SUCCESS', payload: res }));
     } catch (err) {

@@ -3,6 +3,9 @@ import data from './server/Data.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import seedRouter from './server/routes/seedRoute.js';
+import productRouter from './server/routes/productRoute.js';
+import userRouter from './server/routes/userRoute.js';
 
 dotenv.config();
 
@@ -27,29 +30,37 @@ app.use(
     origin: 'http://localhost:3000',
   })
 );
-
-app.get('/api/products', (req, res) => {
-  console.log(data.products);
-  res.send(data.products);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api/seed', seedRouter);
+app.use('/api/products', productRouter);
+app.use('/api/users', userRouter);
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
 });
 
-app.get('/api/product/id/:id', (req, res) => {
-  const product = data.products.find((x) => x._id === req.params.id);
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product not found!' });
-  }
-});
+// app.get('/api/products', (req, res) => {
+//   console.log(data.products);
+//   res.send(data.products);
+// });
 
-app.get('/api/products/:id', (req, res) => {
-  const product = data.products.find((x) => x._id === req.params.id);
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product Not Found' });
-  }
-});
+// app.get('/api/product/id/:id', (req, res) => {
+//   const product = data.products.find((x) => x._id === req.params.id);
+//   if (product) {
+//     res.send(product);
+//   } else {
+//     res.status(404).send({ message: 'Product not found!' });
+//   }
+// });
+
+// app.get('/api/products/:id', (req, res) => {
+//   const product = data.products.find((x) => x._id === req.params.id);
+//   if (product) {
+//     res.send(product);
+//   } else {
+//     res.status(404).send({ message: 'Product Not Found' });
+//   }
+// });
 
 const port = process.env.PORT || 5000;
 

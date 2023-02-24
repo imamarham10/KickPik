@@ -1,7 +1,22 @@
+import bcrypt from 'bcryptjs';
 const data = {
+  users: [
+    {
+      name: 'Arham',
+      email: 'admin@kickpik.com',
+      password: bcrypt.hashSync('1234', 8),
+      isAdmin: true,
+    },
+    {
+      name: 'John',
+      email: 'user@gmail.com',
+      password: bcrypt.hashSync('7894560', 8),
+      isAdmin: false,
+    },
+  ],
   products: [
     {
-      _id: '1',
+      // _id: '1',
       name: 'Nike Sneakers',
       category: 'Shoes',
       gender: `Men's Shoes`,
@@ -14,7 +29,7 @@ const data = {
       countInStock: 2,
     },
     {
-      _id: `2`,
+      // _id: `2`,
       name: 'Adidas Sneakers',
       category: 'Shoes',
       gender: `Men's Shoes`,
@@ -27,7 +42,7 @@ const data = {
       countInStock: 4,
     },
     {
-      _id: `3`,
+      // _id: `3`,
       name: `CHUCK 70 Converse`,
       category: 'Shoes',
       gender: `Men's Shoes`,
@@ -40,7 +55,7 @@ const data = {
       countInStock: 5,
     },
     {
-      _id: `4`,
+      // _id: `4`,
       name: 'Puma Sneakers',
       category: 'Shoes',
       gender: `Men's Shoes`,
@@ -53,7 +68,7 @@ const data = {
       countInStock: 3,
     },
     {
-      _id: `5`,
+      // _id: `5`,
       name: 'Nike Sneakers',
       category: 'Shoes',
       gender: `Men's Shoes`,
@@ -66,7 +81,7 @@ const data = {
       countInStock: 0,
     },
     {
-      _id: `6`,
+      // _id: `6`,
       name: 'Gucci Sneakers',
       category: 'Shoes',
       gender: `Men's Shoes`,
