@@ -10,8 +10,15 @@ import CartPage from './pages/CartPage.js';
 import SigninPage from './pages/SigninPage.js';
 
 function App() {
-  const { state } = useContext(Store);
-  const { cart } = state;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
+
+  const signoutHandler = () => {
+    ctxDispatch({
+      type: 'USER_SIGNOUT',
+    });
+    localStorage.removeItem('userInfo');
+  };
   return (
     <>
       <BrowserRouter>
@@ -35,19 +42,45 @@ function App() {
                   </Link>
                 </span>
               </div>
-              <Link to="/cart">
-                <div className="cart">
-                  <div className="cart-icon">
-                    <img src={cartIcon} alt="cart" />
-                  </div>
-                  <div className="cart-text">Cart</div>
-                  {cart.cartItems.length > 0 && (
-                    <div className="cart-cartItems">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+              <div className="header-right">
+                <Link to="/cart">
+                  <div className="cart">
+                    <div className="cart-icon">
+                      <img src={cartIcon} alt="cart" />
                     </div>
-                  )}
-                </div>
-              </Link>
+                    {/* <div className="cart-text">Cart</div> */}
+                    {cart.cartItems.length > 0 && (
+                      <div className="cart-cartItems">
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+                {userInfo ? (
+                  <div className="dropdown">
+                    <Link to="#" className="name-signin">
+                      {userInfo.name} <i className="fa fa-caret-down" />
+                    </Link>
+                    <ul className="dropdown-content">
+                      <li>
+                        <Link to="/orderhistory">Order History</Link>
+                      </li>
+                      <li>
+                        <Link to="/profile">User Profile</Link>
+                      </li>
+                      <li>
+                        <Link to="#signout" onClick={signoutHandler}>
+                          Sign Out
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <Link to="/signin" className="name-signin">
+                    Sign In
+                  </Link>
+                )}
+              </div>
             </div>
           </header>
           <main>

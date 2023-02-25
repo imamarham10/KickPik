@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useLocation } from 'react-router-dom';
-import Loading from '../components/Loading.js';
-import ErrorMessage from '../components/Message.js';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Store } from '../Store.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { getError } from '../util.js';
 
 export default function SigninPage() {
   const [email, setEmail] = useState('');
@@ -10,6 +13,36 @@ export default function SigninPage() {
   const { search } = useLocation();
   const redirectURL = new URLSearchParams(search).get('redirect');
   const redirect = redirectURL ? redirectURL : '/';
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+  const [catchError, setCatchError] = useState('');
+  const navigate = useNavigate();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        'http://localhost:5000/api/users/signin',
+        {
+          email,
+          password,
+        }
+      );
+      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      navigate(redirect || '/');
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+      setCatchError(getError(err));
+      //   window.alert(getError(err));
+    }
+  };
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, userInfo]);
 
   return (
     <div>
@@ -25,7 +58,16 @@ export default function SigninPage() {
           <ErrorMessage variant="danger">{error}</ErrorMessage>
         </div>
       ) : ( */}
-      <form className="form">
+      <form className="form" onSubmit={submitHandler}>
+        <div
+          style={{
+            fontWeight: '500',
+            color: 'red',
+            padding: '10px',
+          }}
+        >
+          {catchError}
+        </div>
         <div>
           <h1 className="brand-link">Sign In</h1>
         </div>
