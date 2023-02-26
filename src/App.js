@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import { Store } from './Store.js';
 import CartPage from './pages/CartPage.js';
 import SigninPage from './pages/SigninPage.js';
+import ShippingAddresspage from './pages/ShippingAddresspage.js';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -89,6 +90,7 @@ function App() {
               <Route path="/product/id/:id" element={<Productpage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/:signin" element={<SigninPage />} />
+              <Route path="/shipping" element={<ShippingAddresspage />} />
             </Routes>
           </main>
           <footer className="footer">

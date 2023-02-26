@@ -54,7 +54,7 @@ body {
   justify-content: space-between;
   padding-left: 25px;
   padding-right: 25px;
-  padding-top: 10px;
+  padding-top: 5px;
   font-size: 28px;
   font-weight: 600;
   font-family: Arial, Helvetica, sans-serif;
@@ -105,13 +105,14 @@ body {
   position: absolute;
   display: none;
   right: 0;
-  min-width: 12rem;
+  min-width: 8rem;
   padding: 1rem;
   z-index: 1;
   background-color: #092e20;
   margin: 0;
   margin-top: 0.4rem;
   border-radius: 0.5rem;
+  font-size: 14px;
 }
 .dropdown:hover .dropdown-content {
   display: block;
@@ -124,7 +125,6 @@ body {
   align-items: center;
   justify-content: space-between;
   position: absolute;
-  top: 25%;
   /* left: 50%; */
   /* transform: translate(0%, 0%); */
 }
@@ -629,6 +629,7 @@ img.small {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  min-width: 250px;
 }
 .cartpage-checkout {
   padding: 10px;
@@ -664,7 +665,7 @@ img.small {
 /* form */
 .form {
   max-width: 600px;
-  margin: 25px auto 0px auto;
+  margin: 0px auto 0px auto;
 }
 .form > div {
   display: flex;
@@ -673,15 +674,23 @@ img.small {
 }
 .form input {
   height: 25px;
+  border-radius: 10px;
+  padding: 5px;
+  padding-left: 10px;
+  background-color: #cae2b9;
 }
 .form label {
   margin: 10px 0;
+  font-weight: 500;
 }
 .form label:before {
   content: none;
 }
 .form label:after {
   content: none;
+}
+.form button {
+  margin-bottom: 50px;
 }
 #hideMeAfter5Seconds {
   animation: hideAnimation 0s ease-in 5s;
@@ -717,8 +726,8 @@ img.small {
     display: none;
   }
   main {
-    padding: 5px 35px 5px 35px;
-    min-height: 680px;
+    padding: 5px 25px 5px 25px;
+    min-height: 750px;
   }
   ul {
     padding: 0 0px;
@@ -782,5 +791,8 @@ img.small {
   }
   .button-minus {
     padding: 4px 12px 4px 12px;
+  }
+  .shipping-address-container {
+    margin-bottom: 50px;
   }
 }
