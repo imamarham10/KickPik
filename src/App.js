@@ -9,6 +9,9 @@ import { Store } from './Store.js';
 import CartPage from './pages/CartPage.js';
 import SigninPage from './pages/SigninPage.js';
 import ShippingAddresspage from './pages/ShippingAddresspage.js';
+import SignupPage from './pages/SignupPage.js';
+import PaymentMethodPage from './pages/PaymentMethodPage.js';
+import PlaceOrderPage from './pages/PlaceOrderPage.js';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -90,7 +93,10 @@ function App() {
               <Route path="/product/id/:id" element={<Productpage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/:signin" element={<SigninPage />} />
+              <Route path="/signup" element={<SignupPage />} />
               <Route path="/shipping" element={<ShippingAddresspage />} />
+              <Route path="/payment" element={<PaymentMethodPage />} />
+              <Route path="placeorder" element={<PlaceOrderPage />} />
             </Routes>
           </main>
           <footer className="footer">

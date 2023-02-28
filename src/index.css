@@ -8,6 +8,9 @@ body {
   background-color: #f1f8e9;
   min-height: 100vh;
 }
+button {
+  font-family: 'Nunito';
+}
 /* Scrollbar */
 /* width */
 ::-webkit-scrollbar {
@@ -704,7 +707,66 @@ img.small {
     height: 0;
   }
 }
-
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.row.center {
+  justify-content: center;
+}
+.row.top {
+  align-items: flex-start;
+}
+.row.top.util {
+  margin-top: 2rem;
+  margin-bottom: 15rem;
+}
+.row ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row li {
+  margin-top: 1rem;
+}
+.row a {
+  color: #092e20;
+  font-weight: 700;
+  font-family: 'Nunito';
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.column.center {
+  justify-content: center;
+}
+.col-1 {
+  flex: 1 1 25rem;
+}
+.col-2 {
+  flex: 2 1 25rem;
+}
+.card {
+  border: 0.1rem #c0c0c0 solid;
+  background-color: #f0f0f0;
+  border-radius: 0.7rem;
+  margin: 1rem;
+}
+.card-body {
+  padding: 1rem;
+}
+.card-body > * {
+  margin-bottom: 0.5rem;
+}
+.min-30 {
+  /* min-width: 30rem; */
+}
 /* Media Queries (max-width = 480px) */
 @media screen and (max-width: 480px) {
   .header {

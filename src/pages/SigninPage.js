@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from '../Store.js';
-import { ToastContainer, toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 import { getError } from '../util.js';
 
@@ -69,7 +69,7 @@ export default function SigninPage() {
           {catchError}
         </div>
         <div>
-          <h1 className="brand-link">Sign In</h1>
+          <h1 style={{ fontFamily: 'Nunito', textAlign: 'center' }}>Sign In</h1>
         </div>
         <div>
           <label htmlFor="Email Address" style={{ fontWeight: 600 }}>
@@ -108,8 +108,8 @@ export default function SigninPage() {
           <div>
             New customer?{' '}
             <Link
-              to={`/register?redirect=${redirect}`}
-              style={{ color: '#092e20', fontWeight: '600' }}
+              to={`/signup?redirect=${redirect}`}
+              style={{ color: '#092e20', fontWeight: '700' }}
             >
               Create your account
             </Link>
