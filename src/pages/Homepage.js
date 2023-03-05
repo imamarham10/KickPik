@@ -30,6 +30,7 @@ export default function Homepage() {
     dispatch({ type: 'FETCH_REQUEST' });
     try {
       const { data } = await axios.get(`/api/products`);
+      console.log(data);
       dispatch({ type: 'FETCH_SUCCESS', payload: data });
 
       // ky.get(`/api/products`)
