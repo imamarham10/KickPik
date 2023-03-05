@@ -47,29 +47,6 @@ app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 
-// app.get('/api/products', (req, res) => {
-//   console.log(data.products);
-//   res.send(data.products);
-// });
-
-// app.get('/api/product/id/:id', (req, res) => {
-//   const product = data.products.find((x) => x._id === req.params.id);
-//   if (product) {
-//     res.send(product);
-//   } else {
-//     res.status(404).send({ message: 'Product not found!' });
-//   }
-// });
-
-// app.get('/api/products/:id', (req, res) => {
-//   const product = data.products.find((x) => x._id === req.params.id);
-//   if (product) {
-//     res.send(product);
-//   } else {
-//     res.status(404).send({ message: 'Product Not Found' });
-//   }
-// });
-
 const port = process.env.PORT || 5000;
 
 app.use(express.static(path.join(__dirname, 'build')));
