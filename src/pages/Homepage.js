@@ -1,3 +1,4 @@
+import axios from 'axios';
 import ky from 'ky';
 import React, { useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet';
@@ -25,12 +26,15 @@ export default function Homepage() {
     error: '',
   });
   //const [products, setProducts] = useState([]);
-  const fetchAllProducts = () => {
+  const fetchAllProducts = async () => {
     dispatch({ type: 'FETCH_REQUEST' });
     try {
-      ky.get(`http://localhost:5000/api/products`)
-        .then((res) => res.json())
-        .then((res) => dispatch({ type: 'FETCH_SUCCESS', payload: res }));
+      const { data } = await axios.get(`/api/products`);
+      dispatch({ type: 'FETCH_SUCCESS', payload: data });
+
+      // ky.get(`/api/products`)
+      //   .then((res) => res.json())
+      //   .then((res) => dispatch({ type: 'FETCH_SUCCESS', payload: res }));
     } catch (error) {
       dispatch({ type: 'FETCH_FAIL', payload: getError(error) });
     }

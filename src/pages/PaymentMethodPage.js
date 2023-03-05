@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store.js';
 
@@ -25,7 +26,9 @@ export default function PaymentMethodPage() {
   };
   return (
     <div>
-      {' '}
+      <Helmet>
+        <title>Payment Method</title>
+      </Helmet>{' '}
       <form className="form" onSubmit={submitHandler}>
         <div>
           <h1 style={{ fontFamily: 'Nunito', textAlign: 'center' }}>

@@ -12,6 +12,9 @@ import ShippingAddresspage from './pages/ShippingAddresspage.js';
 import SignupPage from './pages/SignupPage.js';
 import PaymentMethodPage from './pages/PaymentMethodPage.js';
 import PlaceOrderPage from './pages/PlaceOrderPage.js';
+import OrderPage from './pages/OrderPage.js';
+import OrderHistoryPage from './pages/OrderHistoryPage.js';
+import ProfilePage from './pages/ProfilePage.js';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -22,6 +25,8 @@ function App() {
       type: 'USER_SIGNOUT',
     });
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('shippingAddress');
+    localStorage.removeItem('paymentMethod');
   };
   return (
     <>
@@ -94,9 +99,12 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/:signin" element={<SigninPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/shipping" element={<ShippingAddresspage />} />
               <Route path="/payment" element={<PaymentMethodPage />} />
-              <Route path="placeorder" element={<PlaceOrderPage />} />
+              <Route path="/placeorder" element={<PlaceOrderPage />} />
+              <Route path="/order/:id" element={<OrderPage />} />
+              <Route path="/orderhistory" element={<OrderHistoryPage />} />
             </Routes>
           </main>
           <footer className="footer">
