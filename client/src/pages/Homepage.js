@@ -30,7 +30,9 @@ export default function Homepage() {
   const fetchAllProducts = async () => {
     dispatch({ type: 'FETCH_REQUEST' });
     try {
-      const { data } = await axios.get(`/api/products`);
+      const { data } = await axios.get(
+        `https://kickpik-backend.vercel.app/api/products`
+      );
       console.log(data);
       dispatch({ type: 'FETCH_SUCCESS', payload: data });
 

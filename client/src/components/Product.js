@@ -15,7 +15,7 @@ export default function Product(props) {
     const existItem = cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(
-      `http://localhost:5000/api/products/${item._id}`
+      `https://kickpik-backend.vercel.app/api/products/${item._id}`
     );
     console.log(data);
     if (data.countInStock < quantity) {

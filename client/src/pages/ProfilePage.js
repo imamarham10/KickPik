@@ -31,7 +31,7 @@ export default function ProfilePage() {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        '/api/users/profile',
+        'https://kickpik-backend.vercel.app/api/users/profile',
         {
           name,
           email,

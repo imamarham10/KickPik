@@ -34,9 +34,12 @@ export default function OrderHistoryPage() {
     const fetchData = async () => {
       dispatch({ tpye: 'FETCH_REQUEST' });
       try {
-        const { data } = await axios.get('/api/orders/mine', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios.get(
+          'https://kickpik-backend.vercel.app/api/orders/mine',
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });

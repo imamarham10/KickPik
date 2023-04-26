@@ -53,7 +53,9 @@ export default function Productpage() {
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${product._id}`);
+    const { data } = await axios.get(
+      `https://kickpik-backend.vercel.app/api/products/${product._id}`
+    );
     // console.log(data);
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');

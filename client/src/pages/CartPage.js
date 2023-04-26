@@ -11,7 +11,9 @@ export default function CartPage() {
     cart: { cartItems },
   } = state;
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/products/${item._id}`);
+    const { data } = await axios.get(
+      `https://kickpik-backend.vercel.app/api/products/${item._id}`
+    );
     if (data.countInStock < quantity) {
       window.alert(`Sorry! Product is out of stock.`);
       return;

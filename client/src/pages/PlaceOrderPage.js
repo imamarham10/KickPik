@@ -38,7 +38,7 @@ export default function PlaceOrderPage() {
       dispatch({ type: 'CREATE_REQUEST' });
 
       const { data } = await axios.post(
-        '/api/orders',
+        'https://kickpik-backend.vercel.app/api/orders',
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,

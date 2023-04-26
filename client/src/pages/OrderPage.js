@@ -68,7 +68,7 @@ export default function OrderPage() {
       try {
         dispatch({ type: 'PAY_REQUEST' });
         const { data } = await axios.put(
-          `/api/orders/${order._id}/pay`,
+          `https://kickpik-backend.vercel.app/api/orders/${order._id}/pay`,
           details,
           { headers: { authorization: `Bearer ${userInfo.token}` } }
         );
@@ -89,9 +89,12 @@ export default function OrderPage() {
     const fetchOrder = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/orders/${orderId}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios.get(
+          `https://kickpik-backend.vercel.app/api/orders/${orderId}`,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
         console.log(data);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -109,9 +112,12 @@ export default function OrderPage() {
       dispatch({ type: 'PAY_RESET' });
     } else {
       const loadPayPalScript = async () => {
-        const { data: clientId } = await axios.get(`/api/keys/paypal`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data: clientId } = await axios.get(
+          `https://kickpik-backend.vercel.app/api/keys/paypal`,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
         paypalDispatch({
           type: 'resetOptions',
           value: {
