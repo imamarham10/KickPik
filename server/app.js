@@ -16,6 +16,8 @@ const userRouter = require('./routes/userRoute.js');
 // import userRouter from './server/routes/userRoute.js';
 const orderRouter = require('./routes/orderRoute.js');
 // import orderRouter from './server/routes/orderRoute.js';
+const bodyParser = require('body-parser');
+const { urlencoded, json } = require('body-parser');
 
 dotenv.config();
 
@@ -35,6 +37,10 @@ mongoose
   });
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -52,13 +58,21 @@ app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 
-const port = process.env.PORT || 5000;
+// const port = process.env.PORT || 5000;
 
-app.use(express.static(path.join(__dirname, 'build')));
-app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// app.use(express.static(path.join(__dirname, 'build')));
+// app.get('*', (_req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
+
+// app.listen(port, () => {
+//   console.log(`server listening at http://localhost:${port}`);
+// });
+
+app.get('*', (req, res, next) => {
+  res.status(200).json({
+    message: 'bad request',
+  });
 });
 
-app.listen(port, () => {
-  console.log(`server listening at http://localhost:${port}`);
-});
+module.exports = app;
