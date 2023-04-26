@@ -886,30 +886,52 @@ img.small {
   .cart-text {
     display: none;
   }
+
   main {
-    padding: 5px 25px 5px 25px;
     min-height: 750px;
   }
   ul {
     padding: 0 0px;
   }
+  .products {
+    padding: 10px 10px 10px 10px;
+  }
+  .product {
+    width: 225px;
+  }
+  .product-image {
+    width: 225px;
+  }
+  .product img {
+    width: 175px;
+    height: 250px;
+  }
+  .product-info {
+    width: 225px;
+  }
+
   .productpage-container {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    margin: 20px auto;
+    margin: 5px auto;
+    padding: 10px 10px 10px 10px;
+    min-height: 900px;
   }
   .productpage-image {
-    width: 350px;
-    height: 500px;
+    width: 225px;
+    height: 350px;
+    margin-bottom: 20px;
   }
   .productpage-details {
+    width: 200px;
     margin-left: 0px;
     align-items: center;
     flex-wrap: nowrap;
   }
   .productpage-quantity-container {
     justify-content: center;
+    flex-direction: column;
   }
   .productpage-price {
     padding-left: 5px;
@@ -920,16 +942,33 @@ img.small {
   .productpage-buynow {
     padding: 10px;
     width: 125px;
+    margin-right: 0px;
+    margin-bottom: 5px;
   }
   .productpage-addToCart {
     padding: 10px;
     width: 125px;
+    margin-left: 0px;
+    margin-top: 5px;
   }
   .productpage-quantity-alert {
     margin-left: 30px;
+    margin-right: 30px;
+  }
+  .productpage-button {
+    flex-direction: column;
   }
   .item-list {
     margin-right: 0px;
+  }
+  .cart-item-image {
+    margin-left: 50px;
+  }
+  img.small {
+    max-width: 10rem;
+  }
+  .item-container {
+    flex-direction: column;
   }
   .item-list-container {
     flex-direction: column;
@@ -937,7 +976,8 @@ img.small {
   .item-container-details {
     flex-direction: column;
     min-width: 250px;
-    margin-left: 0px;
+    margin-left: 5px;
+    margin-top: 25px;
   }
   .checkout-detail {
     margin-right: 0px;
@@ -945,13 +985,22 @@ img.small {
     margin-bottom: 20px;
     border: 1px solid #999;
     border-radius: 10px;
-    padding: 15px;
+    padding: 25px;
+  }
+  .checkout-text {
+    margin-top: 0px;
   }
   .button-plus {
     padding: 4px 12px 4px 12px;
   }
   .button-minus {
     padding: 4px 12px 4px 12px;
+  }
+  .signin-container {
+    padding: 25px;
+  }
+  .signup-container {
+    padding: 25px;
   }
   .shipping-address-container {
     margin-bottom: 50px;

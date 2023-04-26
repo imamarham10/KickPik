@@ -65,7 +65,7 @@ export default function Homepage() {
             <ErrorMessage variant="danger">{error}</ErrorMessage>
           </div>
         ) : (
-          <div className="flex">
+          <div className="flex homepage-container">
             <Sidebar />
             <div className="products">
               {products?.map((product) => (

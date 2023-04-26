@@ -51,12 +51,12 @@ export default function CartPage() {
               {cartItems.map((item) => (
                 <li key={item._id} className="item-list-li">
                   <div className="item-container">
-                    <div>
+                    <div className="cart-item-image">
                       {' '}
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="small medium large"
+                        className="small medium large cart-image"
                       />
                     </div>
                     <div className="item-container-details">
@@ -112,7 +112,7 @@ export default function CartPage() {
             </ul>
 
             <div className="checkout-detail">
-              <div style={{ marginTop: '-25px' }}>
+              <div className="checkout-text">
                 <h4>
                   Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                   items) : $
