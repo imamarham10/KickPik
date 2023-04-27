@@ -1,5 +1,4 @@
 import axios from 'axios';
-import ky from 'ky';
 import React, { useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet';
 import Loading from '../components/Loading.js';

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.js';
 import { StoreProvider } from './Store.js';
-import { HelmetProvider } from 'react-helmet-async';
 import reportWebVitals from './reportWebVitals.js';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import 'tw-elements';

@@ -4,7 +4,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Homepage from './pages/Homepage.js';
 import Productpage from './pages/Productpage.js';
 import Socials from './components/Socials.js';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Store } from './Store.js';
 import CartPage from './pages/CartPage.js';
 import SigninPage from './pages/SigninPage.js';
@@ -15,9 +15,6 @@ import PlaceOrderPage from './pages/PlaceOrderPage.js';
 import OrderPage from './pages/OrderPage.js';
 import OrderHistoryPage from './pages/OrderHistoryPage.js';
 import ProfilePage from './pages/ProfilePage.js';
-
-import { Button, Nav } from 'react-bootstrap';
-import Sidebar from './components/Sidebar.js';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -32,7 +29,6 @@ function App() {
     localStorage.removeItem('paymentMethod');
     window.location.href = '/signin';
   };
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
 
   return (
     <>
