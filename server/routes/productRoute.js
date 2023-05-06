@@ -3,6 +3,7 @@
 
 const express = require('express');
 const Product = require('../models/productModel');
+const expressAsyncHandler = require('express-async-handler');
 
 const productRouter = express.Router();
 
@@ -11,6 +12,15 @@ productRouter.get('/', async (req, res) => {
   console.log(products);
   res.send(products);
 });
+
+productRouter.get('/categories', expressAsyncHandler(async(req,res)=>{
+  const categories = await Product.find().distinct('category');
+  if(categories){
+  res.send(categories);
+  }else{
+    console.log('not found');
+  }
+}))
 
 productRouter.get('/:id', async (req, res) => {
   //   const product = await Product.findOne((x) => x._id === req.params.id);
