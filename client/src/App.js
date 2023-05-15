@@ -15,6 +15,7 @@ import PlaceOrderPage from './pages/PlaceOrderPage.js';
 import OrderPage from './pages/OrderPage.js';
 import OrderHistoryPage from './pages/OrderHistoryPage.js';
 import ProfilePage from './pages/ProfilePage.js';
+import SearchBox from './components/SearchBox.js';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -50,16 +51,18 @@ function App() {
               <div className="logo">
                 <span>
                   <Link to="/">
-                    <img src={logo} alt="logo" className="brand-icon" />
+                    <img src={logo} alt="logo" className="brand-icon max-sm:w-12" />
                   </Link>
                 </span>
                 <span className="brand-link">
                   <Link to="/">
-                    <span className="brand-name">KickPik</span>
+                    <span className="brand-name max-sm:text-xl">KickPik</span>
                   </Link>
                 </span>
+                <SearchBox/>
               </div>
-              <div className="header-right">
+              
+              <div className="header-right max-sm:flex-col-reverse max-md:flex-col-reverse">
                 <Link to="/cart">
                   <div className="cart">
                     <div className="cart-icon">
