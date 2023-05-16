@@ -11,7 +11,7 @@ export default function Sidebar() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        await fetch(`/api/products/categories`)
+        await fetch(`https://kickpik-backend.vercel.app/api/products/categories`)
           .then((response) => response.json())
           .then((response) => {
             setCategories(response);
