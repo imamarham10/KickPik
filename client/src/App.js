@@ -16,6 +16,7 @@ import OrderPage from './pages/OrderPage.js';
 import OrderHistoryPage from './pages/OrderHistoryPage.js';
 import ProfilePage from './pages/ProfilePage.js';
 import SearchBox from './components/SearchBox.js';
+import SearchPage from './pages/SearchPage.js';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -65,7 +66,7 @@ function App() {
               <div className="header-right max-sm:flex-col-reverse max-md:flex-col-reverse">
                 <Link to="/cart">
                   <div className="cart">
-                    <div className="cart-icon">
+                    <div className="cart-icon max-sm:w-5">
                       <img src={cartIcon} alt="cart" />
                     </div>
                     {/* <div className="cart-text">Cart</div> */}
@@ -78,10 +79,10 @@ function App() {
                 </Link>
                 {userInfo ? (
                   <div className="dropdown">
-                    <Link to="#" className="name-signin">
+                    <Link to="#" className="name-signin max-sm:text-sm">
                       {userInfo.name} <i className="fa fa-caret-down" />
                     </Link>
-                    <ul className="dropdown-content">
+                    <ul className="dropdown-content max-sm:text-sm">
                       <li>
                         <Link to="/orderhistory">Order History</Link>
                       </li>
@@ -139,6 +140,7 @@ function App() {
               <Route path="/placeorder" element={<PlaceOrderPage />} />
               <Route path="/order/:id" element={<OrderPage />} />
               <Route path="/orderhistory" element={<OrderHistoryPage />} />
+              <Route path='/search' element={<SearchPage/>}/>
             </Routes>
           </main>
           <footer className="footer">

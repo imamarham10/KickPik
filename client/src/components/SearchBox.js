@@ -13,8 +13,8 @@ export default function SearchBox () {
   return (
     <div>
         <form onSubmit={submitHandler}>
-            <div className="flex bg-background shadow-black rounded-3xl ml-3 border border-primary px-3 flex-wrap" >
-                    <input className="w-72 font-nunito bg-background max-sm:w-28 max-sm:text-sm max-sm:px-1 font-normal text-lg focus:outline-none " placeholder='Search' 
+            <div className="flex bg-background shadow-black py-1 rounded-3xl ml-3 border border-primary px-3 flex-wrap" >
+                    <input className="w-72 font-nunito bg-background max-sm:w-24 max-sm:text-sm max-sm:px-1 font-normal text-lg focus:outline-none " placeholder='Search' 
                     onChange={(e)=>setQuery(e.target.value)}/>
                     <button className="text-lg" type="submit"><SearchIcon className="text-primary text-3xl"/></button>
             </div>

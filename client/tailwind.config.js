@@ -11,7 +11,7 @@ module.exports = {
         amber: '#eab308',
       },
       fontFamily: {
-        nunito : 'Inter, sans-serif',
+        nunito : 'Nunito',
       }
     },
   },
