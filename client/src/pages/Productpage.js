@@ -9,6 +9,7 @@ import { Store } from '../Store.js';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import Sidebar from '../components/Sidebar.js';
+import Loading from '../components/Loading.js';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -75,13 +76,14 @@ export default function Productpage() {
         <title>{product.name}</title>
       </Helmet>
       {loading ? (
-        <div>Loading...</div>
+        <div className="h-screen">
+        <Loading/></div>
       ) : error ? (
         <div>
           <ErrorMessage variant="danger">{error}</ErrorMessage>
         </div>
       ) : (
-        <div className="flex">
+        <div className="flex h-screen">
           <Sidebar />
           <div className="productpage-container pt-5 pb-5 pl-12 pr-12">
             <div>

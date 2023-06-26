@@ -1,22 +1,27 @@
-import logo from './resources/sneakers.png';
-import cartIcon from './resources/shopping-cart.png';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import Homepage from './pages/Homepage.js';
-import Productpage from './pages/Productpage.js';
-import Socials from './components/Socials.js';
-import { useContext } from 'react';
-import { Store } from './Store.js';
-import CartPage from './pages/CartPage.js';
-import SigninPage from './pages/SigninPage.js';
-import ShippingAddresspage from './pages/ShippingAddresspage.js';
-import SignupPage from './pages/SignupPage.js';
-import PaymentMethodPage from './pages/PaymentMethodPage.js';
-import PlaceOrderPage from './pages/PlaceOrderPage.js';
-import OrderPage from './pages/OrderPage.js';
-import OrderHistoryPage from './pages/OrderHistoryPage.js';
-import ProfilePage from './pages/ProfilePage.js';
-import SearchBox from './components/SearchBox.js';
-import SearchPage from './pages/SearchPage.js';
+import logo from "./resources/sneakers.png";
+import cartIcon from "./resources/shopping-cart.png";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import Homepage from "./pages/Homepage.js";
+import Productpage from "./pages/Productpage.js";
+import Socials from "./components/Socials.js";
+import { useContext } from "react";
+import { Store } from "./Store.js";
+import CartPage from "./pages/CartPage.js";
+import SigninPage from "./pages/SigninPage.js";
+import ShippingAddresspage from "./pages/ShippingAddresspage.js";
+import SignupPage from "./pages/SignupPage.js";
+import PaymentMethodPage from "./pages/PaymentMethodPage.js";
+import PlaceOrderPage from "./pages/PlaceOrderPage.js";
+import OrderPage from "./pages/OrderPage.js";
+import OrderHistoryPage from "./pages/OrderHistoryPage.js";
+import ProfilePage from "./pages/ProfilePage.js";
+import SearchBox from "./components/SearchBox.js";
+import SearchPage from "./pages/SearchPage.js";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+import DashboardPage from "./pages/DashboardPage.js";
+import ProductListScreen from "./pages/ProductListPage";
+import ProductEditPage from "./pages/ProductEditPage.js";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -24,12 +29,12 @@ function App() {
 
   const signoutHandler = () => {
     ctxDispatch({
-      type: 'USER_SIGNOUT',
+      type: "USER_SIGNOUT",
     });
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('shippingAddress');
-    localStorage.removeItem('paymentMethod');
-    window.location.href = '/signin';
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+    window.location.href = "/signin";
   };
 
   return (
@@ -52,7 +57,11 @@ function App() {
               <div className="logo">
                 <span>
                   <Link to="/">
-                    <img src={logo} alt="logo" className="brand-icon max-sm:w-12" />
+                    <img
+                      src={logo}
+                      alt="logo"
+                      className="brand-icon max-sm:w-12"
+                    />
                   </Link>
                 </span>
                 <span className="brand-link">
@@ -60,9 +69,9 @@ function App() {
                     <span className="brand-name max-sm:text-xl">KickPik</span>
                   </Link>
                 </span>
-                <SearchBox/>
+                <SearchBox />
               </div>
-              
+
               <div className="header-right max-sm:flex-col-reverse max-md:flex-col-reverse">
                 <Link to="/cart">
                   <div className="cart">
@@ -101,6 +110,27 @@ function App() {
                     Sign In
                   </Link>
                 )}
+                {userInfo && userInfo.isAdmin && (
+                  <div className="dropdown">
+                    <Link to="#admin" className="name-signin max-sm:text-sm">
+                      Admin <i className="fa fa-caret-down" />
+                    </Link>
+                    <ul className="dropdown-content">
+                      <li>
+                        <Link to="/admin/dashboard">Dashboard</Link>
+                      </li>
+                      <li>
+                        <Link to="/admin/products">Products</Link>
+                      </li>
+                      <li>
+                        <Link to="/admin/orderlist">Orders</Link>
+                      </li>
+                      <li>
+                        <Link to="/admin/userlist">Users</Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </header>
@@ -134,13 +164,58 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/:signin" element={<SigninPage />} />
               <Route path="/signup" element={<SignupPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <ProfilePage />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/shipping" element={<ShippingAddresspage />} />
               <Route path="/payment" element={<PaymentMethodPage />} />
               <Route path="/placeorder" element={<PlaceOrderPage />} />
-              <Route path="/order/:id" element={<OrderPage />} />
-              <Route path="/orderhistory" element={<OrderHistoryPage />} />
-              <Route path='/search' element={<SearchPage/>}/>
+              <Route
+                path="/order/:id"
+                element={
+                  <ProtectedRoute>
+                    <OrderPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orderhistory"
+                element={
+                  <ProtectedRoute>
+                    <OrderHistoryPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/search" element={<SearchPage />} />
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <AdminRoute>
+                    <DashboardPage />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/products"
+                element={
+                  <AdminRoute>
+                    <ProductListScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/product/:id"
+                element={
+                  <AdminRoute>
+                    <ProductEditPage />
+                  </AdminRoute>
+                }
+              ></Route>
             </Routes>
           </main>
           <footer className="footer">

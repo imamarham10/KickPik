@@ -105,7 +105,9 @@ export default function SearchPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        await fetch(`https://kickpik-backend.vercel.app/api/products/categories`)
+        await fetch(
+          `https://kickpik-backend.vercel.app/api/products/categories`
+        )
           .then((response) => response.json())
           .then((response) => {
             setCategories(response);
@@ -174,7 +176,9 @@ export default function SearchPage() {
                 <li key={p.value}>
                   <Link
                     to={getFilterUrl({ price: p.value })}
-                    className={ p.value === price ? "text-bold text-sm" : "text-sm"}
+                    className={
+                      p.value === price ? "text-bold text-sm" : "text-sm"
+                    }
                   >
                     {p.name}
                   </Link>
@@ -206,7 +210,7 @@ export default function SearchPage() {
             </ul>
           </div>
         </div>
-        <div className="flex-col">
+        <div className="flex-col w-full">
           {loading ? (
             <Loading></Loading>
           ) : error ? (
@@ -214,7 +218,7 @@ export default function SearchPage() {
           ) : (
             <>
               <div className="flex justify-around max-sm:flex-col-reverse max-sm:items-center">
-                <div className="flex-col">
+                <div className="flex-col mx-5">
                   <div>
                     {countProducts === 0 ? "No" : countProducts} Results
                     {query !== "all" && " : " + query}
@@ -260,25 +264,25 @@ export default function SearchPage() {
                   </div>
                 ))}
               </div>
-
-              <div className="item-center border p-1">
-                {[...Array(pages).keys()].map((x) => (
-                  <Link
-                    key={x + 1}
-                    className="mx-1"
-                    to={getFilterUrl({ page: x + 1 })}
-                  >
-                    <button
-                      className={Number(page) === x + 1 ? "text-bold" : ""}
-                      variant="light"
-                    >
-                      {x + 1}
-                    </button>
-                  </Link>
-                ))}
-              </div>
+              <div className="flex  pl-10 py-2 my-10 mb-20 items-center mx-0 border mr-10">
+          {[...Array(pages).keys()].map((x) => (
+            <Link
+              key={x + 1}
+              className="mx-1"
+              to={getFilterUrl({ page: x + 1 })}
+            >
+              <button
+                className={Number(page) === x + 1 ? "text-bold" : ""}
+                variant="light"
+              >
+                {x + 1}
+              </button>
+            </Link>
+          ))}
+        </div>
             </>
           )}
+          
         </div>
       </div>
     </div>
