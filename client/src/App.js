@@ -22,6 +22,7 @@ import AdminRoute from "./components/AdminRoute";
 import DashboardPage from "./pages/DashboardPage.js";
 import ProductListScreen from "./pages/ProductListPage";
 import ProductEditPage from "./pages/ProductEditPage.js";
+import OrderListScreen from "./pages/OrderListPage.js";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -123,7 +124,7 @@ function App() {
                         <Link to="/admin/products">Products</Link>
                       </li>
                       <li>
-                        <Link to="/admin/orderlist">Orders</Link>
+                        <Link to="/admin/orders">Orders</Link>
                       </li>
                       <li>
                         <Link to="/admin/userlist">Users</Link>
@@ -213,6 +214,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <ProductEditPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/orders"
+                element={
+                  <AdminRoute>
+                    <OrderListScreen />
                   </AdminRoute>
                 }
               ></Route>

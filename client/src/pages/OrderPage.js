@@ -1,30 +1,42 @@
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react';
-import { Helmet } from 'react-helmet';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import Loading from '../components/Loading.js';
-import ErrorMessage from '../components/Message.js';
-import TextMessage from '../components/TextMessage.js';
-import { Store } from '../Store.js';
-import { getError } from '../util.js';
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import axios from "axios";
+import React, { useContext, useEffect, useReducer } from "react";
+import { Helmet } from "react-helmet";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Loading from "../components/Loading.js";
+import ErrorMessage from "../components/Message.js";
+import TextMessage from "../components/TextMessage.js";
+import { Store } from "../Store.js";
+import { getError } from "../util.js";
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'FETCH_REQUEST':
-      return { ...state, loading: true, error: '' };
-    case 'FETCH_SUCCESS':
-      return { ...state, loading: false, order: action.payload, error: '' };
-    case 'FETCH_FAIL':
+    case "FETCH_REQUEST":
+      return { ...state, loading: true, error: "" };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false, order: action.payload, error: "" };
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-    case 'PAY_REQUEST':
+    case "PAY_REQUEST":
       return { ...state, loadingPay: true };
-    case 'PAY_SUCCESS':
+    case "PAY_SUCCESS":
       return { ...state, loadingPay: false, successPay: true };
-    case 'PAY_FAIL':
+    case "PAY_FAIL":
       return { ...state, loadingPay: false };
-    case 'PAY_RESET':
+    case "PAY_RESET":
       return { ...state, loadingPay: false, successPay: false };
+    case "DELIVER_REQUEST":
+      return { ...state, loadingDeliver: true };
+    case "DELIVER_SUCCESS":
+      return { ...state, loadingDeliver: false, successDeliver: true };
+    case "DELIVER_FAIL":
+      return { ...state, loadingDeliver: false };
+    case "DELIVER_RESET":
+      return {
+        ...state,
+        loadingDeliver: false,
+        successDeliver: false,
+      };
     default:
       return state;
   }
@@ -38,14 +50,24 @@ export default function OrderPage() {
   const { id: orderId } = params;
   const navigate = useNavigate();
 
-  const [{ loading, error, order, successPay, loadingPay }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      order: {},
-      error: '',
-      successPay: false,
-      loadingPay: false,
-    });
+  const [
+    {
+      loading,
+      error,
+      order,
+      successPay,
+      loadingPay,
+      loadingDeliver,
+      successDeliver,
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    order: {},
+    error: "",
+    successPay: false,
+    loadingPay: false,
+  });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
@@ -66,16 +88,16 @@ export default function OrderPage() {
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
       try {
-        dispatch({ type: 'PAY_REQUEST' });
+        dispatch({ type: "PAY_REQUEST" });
         const { data } = await axios.put(
           `https://kickpik-backend.vercel.app/api/orders/${order._id}/pay`,
           details,
           { headers: { authorization: `Bearer ${userInfo.token}` } }
         );
-        dispatch({ type: 'PAY_SUCCESS', payload: data });
+        dispatch({ type: "PAY_SUCCESS", payload: data });
         window.alert(`Order is paid.`);
       } catch (err) {
-        dispatch({ type: 'PAY_FAIL', payload: getError(err) });
+        dispatch({ type: "PAY_FAIL", payload: getError(err) });
         window.alert(getError(err));
       }
     });
@@ -88,7 +110,7 @@ export default function OrderPage() {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        dispatch({ type: 'FETCH_REQUEST' });
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(
           `https://kickpik-backend.vercel.app/api/orders/${orderId}`,
           {
@@ -96,20 +118,28 @@ export default function OrderPage() {
           }
         );
         console.log(data);
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
 
     if (!userInfo) {
-      return navigate('/login');
+      return navigate("/login");
     }
-    if (!order._id || successPay || (order._id && order._id !== orderId)) {
+    if (
+      !order._id ||
+      successPay ||
+      successDeliver ||
+      (order._id && order._id !== orderId)
+    ) {
       fetchOrder();
     }
     if (successPay) {
-      dispatch({ type: 'PAY_RESET' });
+      dispatch({ type: "PAY_RESET" });
+    }
+    if (successDeliver) {
+      dispatch({ type: "DELIVER_RESET" });
     } else {
       const loadPayPalScript = async () => {
         const { data: clientId } = await axios.get(
@@ -119,18 +149,42 @@ export default function OrderPage() {
           }
         );
         paypalDispatch({
-          type: 'resetOptions',
+          type: "resetOptions",
           value: {
-            'client-id': clientId,
-            currency: 'USD',
+            "client-id": clientId,
+            currency: "USD",
           },
         });
-        paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
       };
       loadPayPalScript();
     }
-  }, [order, userInfo, orderId, navigate, paypalDispatch, successPay]);
-
+  }, [
+    order,
+    userInfo,
+    orderId,
+    navigate,
+    paypalDispatch,
+    successPay,
+    successDeliver,
+  ]);
+  async function deliverOrderHandler() {
+    try {
+      dispatch({ type: "DELIVER_REQUEST" });
+      const { data } = await axios.put(
+        `/api/orders/${order._id}/deliver`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: "DELIVER_SUCCESS", payload: data });
+      window.alert("Order is delivered");
+    } catch (err) {
+      window.alert(getError(err));
+      dispatch({ type: "DELIVER_FAIL" });
+    }
+  }
   return loading ? (
     <Loading></Loading>
   ) : error ? (
@@ -140,30 +194,22 @@ export default function OrderPage() {
       <Helmet>
         <title>Order {orderId}</title>
       </Helmet>
-      <div
-        style={{
-          display: 'flex',
-          fontFamily: 'Nunito',
-          flexWrap: 'wrap',
-          fontSize: 'xx-small',
-          justifyContent: 'center',
-        }}
-      >
-        <h1 style={{ fontFamily: 'Nunito' }}>Order Id: {orderId}</h1>
+      <div className="p-5" >
+        <div className="font-bold font-nunito text-2xl">Order Id: {orderId}</div>
       </div>
       <div className="row top">
         <div className="col-2">
           <ul>
             <li>
               <div className="card card-body">
-                <h2 style={{ fontFamily: 'Nunito' }}>Shipping</h2>
+                <h2 style={{ fontFamily: "Nunito" }}>Shipping</h2>
                 <p>
-                  <strong style={{ fontFamily: 'Nunito' }}>Name:</strong>{' '}
+                  <strong style={{ fontFamily: "Nunito" }}>Name:</strong>{" "}
                   {order.shippingAddress.fullName} <br />
-                  <strong style={{ fontFamily: 'Nunito' }}>
-                    Address:{' '}
-                  </strong>{' '}
-                  {order.shippingAddress.address},{order.shippingAddress.city},{' '}
+                  <strong style={{ fontFamily: "Nunito" }}>
+                    Address:{" "}
+                  </strong>{" "}
+                  {order.shippingAddress.address},{order.shippingAddress.city},{" "}
                   {order.shippingAddress.postalCode},
                   {order.shippingAddress.country}
                 </p>
@@ -178,9 +224,9 @@ export default function OrderPage() {
             </li>
             <li>
               <div className="card card-body">
-                <h2 style={{ fontFamily: 'Nunito' }}>Payment</h2>
+                <h2 style={{ fontFamily: "Nunito" }}>Payment</h2>
                 <p>
-                  <strong style={{ fontFamily: 'Nunito' }}>Method:</strong>{' '}
+                  <strong style={{ fontFamily: "Nunito" }}>Method:</strong>{" "}
                   {order.paymentMethod}
                 </p>
                 {order.isPaid ? (
@@ -194,7 +240,7 @@ export default function OrderPage() {
             </li>
             <li>
               <div className="card card-body">
-                <h2 style={{ fontFamily: 'Nunito' }}>Order Items</h2>
+                <h2 style={{ fontFamily: "Nunito" }}>Order Items</h2>
                 <ul>
                   {order.orderItems.map((item) => (
                     <li key={item.product}>
@@ -228,7 +274,7 @@ export default function OrderPage() {
           <div className="card card-body">
             <ul>
               <li>
-                <h2 style={{ fontFamily: 'Nunito' }}>Order Summary</h2>
+                <h2 style={{ fontFamily: "Nunito" }}>Order Summary</h2>
               </li>
               <li>
                 <div className="row">
@@ -251,8 +297,8 @@ export default function OrderPage() {
               <li>
                 <div className="row">
                   <div>
-                    <strong style={{ fontFamily: 'Nunito' }}>
-                      {' '}
+                    <strong style={{ fontFamily: "Nunito" }}>
+                      {" "}
                       Order Total
                     </strong>
                   </div>
@@ -275,6 +321,16 @@ export default function OrderPage() {
                     </div>
                   )}
                   {loadingPay && <Loading></Loading>}
+                </li>
+              )}
+              {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                <li>
+                  {loadingDeliver && <div className="h-screen"><Loading/></div>}
+                  <div className="d-grid">
+                      <button type="button" onClick={deliverOrderHandler} className="primary cartpage-checkout">
+                        Deliver Order
+                      </button>
+                    </div>
                 </li>
               )}
             </ul>
