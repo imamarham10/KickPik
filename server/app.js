@@ -18,6 +18,7 @@ const orderRouter = require('./routes/orderRoute.js');
 // import orderRouter from './server/routes/orderRoute.js';
 const bodyParser = require('body-parser');
 const { urlencoded, json } = require('body-parser');
+const uploadRouter = require('./routes/uploadRoute.js');
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use('/api/seed', seedRouter);
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/upload', uploadRouter);
 app.use('/api/keys/paypal', (req, res) => {
   res.send(
     `Act7e4JzPXGSkkpn4i8_kgjsL0Arhlb9e9g5Ie3yQ4iw9agA-E1Q63AnvAYIiqGuuwCaAxjxX7yFy5kl` ||
