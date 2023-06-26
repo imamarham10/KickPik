@@ -56,11 +56,11 @@ export default function Homepage() {
         </Helmet>
         <h1>Featured Product</h1>
         {loading ? (
-          <div>
+          <div className="h-screen">
             <Loading />
           </div>
         ) : error ? (
-          <div>
+          <div className="h-screen">
             <ErrorMessage variant="danger">{error}</ErrorMessage>
           </div>
         ) : (

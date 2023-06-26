@@ -2,8 +2,10 @@
 // import Product from '../models/productModel.js';
 
 const express = require("express");
-const Product = require("../models/productModel");
+const Product = require("../models/productModel.js");
 const expressAsyncHandler = require("express-async-handler");
+const { isAuth, isAdmin } = require("../util.js");
+
 
 const productRouter = express.Router();
 
@@ -13,7 +15,73 @@ productRouter.get("/", async (req, res) => {
   res.send(products);
 });
 
+productRouter.post(
+  '/',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const newProduct = new Product({
+      name: 'sample name ' + Date.now(),
+      category: 'sample category',
+      gender: `sample gender`,
+      image: '/images/product-1.jpg',
+      price: 0,
+      brand: 'sample brand',
+      rating: 0,
+      numberOfReviews: 10,
+      description: 'sample description',
+      countInStock: 0,
+    });
+    const product = await newProduct.save();
+    res.send({ message: 'Product Created', product });
+  })
+);
+
+productRouter.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if (product) {
+      product.name = req.body.name;
+      product.price = req.body.price;
+      product.image = req.body.image;
+      product.category = req.body.category;
+      product.brand = req.body.brand;
+      product.countInStock = req.body.countInStock;
+      product.description = req.body.description;
+      await product.save();
+      res.send({ message: 'Product Updated' });
+    } else {
+      res.status(404).send({ message: 'Product Not Found' });
+    }
+  })
+);
+
 const PAGE_SIZE = 6;
+productRouter.get(
+  '/admin',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const { query } = req;
+    const page = query.page || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
+
+    const products = await Product.find()
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    const countProducts = await Product.countDocuments();
+    res.send({
+      products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize),
+    });
+  })
+);
 productRouter.get(
   "/search",
   expressAsyncHandler(async (req, res) => {
