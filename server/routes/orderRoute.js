@@ -3,18 +3,21 @@
 // import Order from '../models/orderModel.js';
 // import { isAuth } from '../util.js';
 
-const express = require('express');
-const expressAsyncHandler = require('express-async-handler');
-const Order = require('../models/orderModel');
-const { isAuth } = require('../util');
+const express = require("express");
+const expressAsyncHandler = require("express-async-handler");
+const Order = require("../models/orderModel");
+const User = require("../models/userModel");
+const { isAuth, isAdmin } = require("../util");
+const Product = require("../models/productModel");
+const mongoose = require("mongoose");
 
 const orderRouter = express.Router();
 orderRouter.post(
-  '/',
+  "/",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     if (req.body.orderItems.length === 0) {
-      res.status(400).send({ message: 'Cart is empty' });
+      res.status(400).send({ message: "Cart is empty" });
     } else {
       const newOrder = new Order({
         orderItems: req.body.orderItems.map((x) => ({ ...x, product: x._id })),
@@ -28,13 +31,13 @@ orderRouter.post(
       });
 
       const order = await newOrder.save();
-      res.status(201).send({ message: 'New Order Created', order });
+      res.status(201).send({ message: "New Order Created", order });
     }
   })
 );
 
 orderRouter.get(
-  '/mine',
+  "/mine",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
@@ -43,7 +46,7 @@ orderRouter.get(
 );
 
 orderRouter.put(
-  '/:id/pay',
+  "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
@@ -58,22 +61,71 @@ orderRouter.put(
       };
 
       const updatedOrder = await order.save();
-      res.send({ message: 'Order Paid', order: updatedOrder });
+      res.send({ message: "Order Paid", order: updatedOrder });
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: "Order Not Found" });
     }
   })
 );
 
 orderRouter.get(
-  '/:id',
+  "/:id",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
       res.send(order);
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: "Order Not Found" });
+    }
+  })
+);
+
+orderRouter.get(
+  "/summary",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const orders = await Order.aggregate([
+        {
+          $group: {
+            _id: null,
+            numOrders: { $sum: 1 },
+            totalSales: { $sum: "$totalPrice" },
+          },
+        },
+      ]);
+      const users = await User.aggregate([
+        {
+          $group: {
+            _id: null,
+            numUsers: { $sum: 1 },
+          },
+        },
+      ]);
+      const dailyOrders = await Order.aggregate([
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+            orders: { $sum: 1 },
+            sales: { $sum: "$totalPrice" },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+      const productCategories = await Product.aggregate([
+        {
+          $group: {
+            _id: "$category",
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+      res.send({ users, orders, dailyOrders, productCategories });
+    } catch (error) {
+      console.error("Error in summary endpoint:", error);
+      res.status(500).send({ message: "Internal Server Error" });
     }
   })
 );
