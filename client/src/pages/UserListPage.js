@@ -50,7 +50,7 @@ export default function UserListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/users`, {
+        const { data } = await axios.get(`https://kickpik-backend.vercel.app/api/users`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -71,7 +71,7 @@ export default function UserListPage() {
     if (window.confirm("Are you sure to delete?")) {
       try {
         dispatch({ type: "DELETE_REQUEST" });
-        await axios.delete(`/api/users/${user._id}`, {
+        await axios.delete(`https://kickpik-backend.vercel.app/api/users/${user._id}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         window.alert("user deleted successfully");

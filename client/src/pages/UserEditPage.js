@@ -52,7 +52,7 @@ export default function UserEditPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/users/${userId}`, {
+        const { data } = await axios.get(`https://kickpik-backend.vercel.app/api/users/${userId}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         setName(data.name);
@@ -74,7 +74,7 @@ export default function UserEditPage() {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       await axios.put(
-        `/api/users/${userId}`,
+        `https://kickpik-backend.vercel.app/api/users/${userId}`,
         { _id: userId, name, email, isAdmin },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
