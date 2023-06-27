@@ -5,6 +5,7 @@ import { Store } from "../Store";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/Message";
 import { getError } from "../util.js";
+import { Helmet } from "react-helmet";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -136,83 +137,83 @@ export default function ProductListScreen() {
   };
 
   return (
-    <div className="p-5 h-screen">
-      <div className="flex justify-between mb-5">
-        <div className="flex-col">
-          <div className="font-bold text-xl font-nunito">Products</div>
-        </div>
-        <div className="flex-col">
-          <button
-            className="p-2 mb-2 bg-primary text-white rounded-full"
-            onClick={createHandler}
-          >
-            Create Product
-          </button>
-        </div>
-      </div>
-      {loadingCreate && <Loading></Loading>}
-      {loadingDelete && <Loading></Loading>}
-      {loading ? (
-        <Loading></Loading>
-      ) : error ? (
-        <ErrorMessage variant="danger">{error}</ErrorMessage>
-      ) : (
-        <>
-          <table className="table">
-            <thead>
-              <tr>
-                <th className="collapsable">ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th className="collapsable">CATEGORY</th>
-                <th className="collapsable">BRAND</th>
-                <th>ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr key={product._id}>
-                  <td className="collapsable">{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td className="collapsable">{product.category}</td>
-                  <td className="collapsable">{product.brand}</td>
-                  <td>
-                    <button
-                      variant="light"
-                      onClick={() => navigate(`/admin/product/${product._id}`)}
-                      className="p-1 rounded-full"
-                    >
-                      Edit
-                    </button>
-                    &nbsp;
-                    <button
-                      type="button"
-                      variant="light"
-                      onClick={() => deleteHandler(product)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="flex  pl-10 py-2 mt-12 mb-12 items-center mx-10 border">
-            {[...Array(pages).keys()].map((x) => (
-              <Link
-                className={
-                  x + 1 === Number(page) ? "btn text-bold mx-6" : "btn"
-                }
-                key={x + 1}
-                to={`/admin/products?page=${x + 1}`}
-              >
-                {x + 1}
-              </Link>
-            ))}
+    <><Helmet>
+      <title>Products</title>
+    </Helmet><div className="p-5 h-screen">
+        <div className="flex justify-between mb-5">
+          <div className="flex-col">
+            <div className="font-bold text-xl font-nunito">Products</div>
           </div>
-        </>
-      )}
-    </div>
+          <div className="flex-col">
+            <button
+              className="p-2 mb-2 bg-primary text-white rounded-full"
+              onClick={createHandler}
+            >
+              Create Product
+            </button>
+          </div>
+        </div>
+        {loadingCreate && <Loading></Loading>}
+        {loadingDelete && <Loading></Loading>}
+        {loading ? (
+          <Loading></Loading>
+        ) : error ? (
+          <ErrorMessage variant="danger">{error}</ErrorMessage>
+        ) : (
+          <>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th className="collapsable">ID</th>
+                  <th>NAME</th>
+                  <th>PRICE</th>
+                  <th className="collapsable">CATEGORY</th>
+                  <th className="collapsable">BRAND</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product._id}>
+                    <td className="collapsable">{product._id}</td>
+                    <td>{product.name}</td>
+                    <td>{product.price}</td>
+                    <td className="collapsable">{product.category}</td>
+                    <td className="collapsable">{product.brand}</td>
+                    <td>
+                      <button
+                        variant="light"
+                        onClick={() => navigate(`/admin/product/${product._id}`)}
+                        className="p-1 rounded-full"
+                      >
+                        Edit
+                      </button>
+                      &nbsp;
+                      <button
+                        type="button"
+                        variant="light"
+                        onClick={() => deleteHandler(product)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex  pl-10 py-2 mt-12 mb-12 items-center mx-10 border">
+              {[...Array(pages).keys()].map((x) => (
+                <Link
+                  className={x + 1 === Number(page) ? "btn text-bold mx-6" : "btn"}
+                  key={x + 1}
+                  to={`/admin/products?page=${x + 1}`}
+                >
+                  {x + 1}
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+      </div></>
   );
 }

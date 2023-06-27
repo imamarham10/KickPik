@@ -781,6 +781,37 @@ img.small {
 .form button {
   margin-bottom: 50px;
 }
+
+/* user edit form */
+.form-user-edit {
+  max-width: 650px;
+  margin: 25px auto 25px auto;
+}
+/* .form-user-edit > div {
+  display: flex;
+  flex-direction: row;
+  margin: 0.5rem;
+} */
+.form-user-edit input {
+  height: 40px;
+  border-radius: 10px;
+  padding: 5px;
+  padding-left: 10px;
+  background-color: #cae2b9;
+}
+.form-user-edit label {
+  margin: 10px 0;
+  font-weight: 500;
+}
+.form-user-edit label:before {
+  content: none;
+}
+.form-user-edit label:after {
+  content: none;
+}
+.form-user-edit button {
+  margin-bottom: 50px;
+}
 #hideMeAfter5Seconds {
   animation: hideAnimation 0s ease-in 5s;
   animation-fill-mode: forwards;

@@ -4,16 +4,81 @@
 // import bcrypt from 'bcryptjs';
 // import { generateToken, isAuth } from '../util.js';
 
-const express = require('express');
-const expressAsyncHandler = require('express-async-handler');
-const bcrypt = require('bcryptjs');
-const { isAuth, generateToken } = require('../util');
-const User = require('../models/userModel');
+const express = require("express");
+const expressAsyncHandler = require("express-async-handler");
+const bcrypt = require("bcryptjs");
+const { isAuth, generateToken, isAdmin } = require("../util");
+const User = require("../models/userModel");
 
 const userRouter = express.Router();
 
+userRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.send(users).status(200);
+  })
+);
+userRouter.get(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ message: "User Not Found" });
+    }
+  })
+);
+
+userRouter.put(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      if (user.email === "admin@kickpik.com") {
+        res.send({ message: `You cannot edit this admin!` }).status(400);
+        return;
+      }
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.isAdmin = Boolean(req.body.isAdmin);
+      const updatedUser = await user.save();
+      res.send({ message: "User Updated", user: updatedUser });
+    } else {
+      res.status(404).send({ message: "User Not Found" });
+    }
+  })
+);
+
+userRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      if (user.email === "admin@kickpik.com") {
+        res.status(400).send({ message: "Can Not Delete Admin User" });
+        return;
+      } else {
+        await user.deleteOne();
+        res.send({ message: "User Deleted" });
+      }
+    } else {
+      res.status(404).send({ message: "User Not Found" });
+    }
+  })
+);
+
 userRouter.post(
-  '/signin',
+  "/signin",
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -29,12 +94,12 @@ userRouter.post(
         return;
       }
     }
-    res.status(401).send({ message: 'Invalid email or password' });
+    res.status(401).send({ message: "Invalid email or password" });
   })
 );
 
 userRouter.post(
-  '/signup',
+  "/signup",
   expressAsyncHandler(async (req, res) => {
     const newUser = new User({
       name: req.body.name,
@@ -53,7 +118,7 @@ userRouter.post(
 );
 
 userRouter.put(
-  '/profile',
+  "/profile",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
@@ -73,7 +138,7 @@ userRouter.put(
         token: generateToken(updatedUser),
       });
     } else {
-      res.status(404).send({ message: 'User not found' });
+      res.status(404).send({ message: "User not found" });
     }
   })
 );
