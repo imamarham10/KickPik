@@ -49,7 +49,7 @@ export default function ShippingAddresspage() {
         <title>Shipping Address</title>
       </Helmet>
 
-      <div className="shipping-address-container">
+      <div className="shipping-address-container h-screen">
         <form className="form" onSubmit={submitHandler}>
           <div>
             <h1

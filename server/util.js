@@ -18,8 +18,8 @@ const generateToken = (user) => {
 };
  const mailgun = () =>
   mg({
-    apiKey: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_DOMAIN,
+    apiKey: `35db5df21c3f192ef8b2fa142e357a35-6d8d428c-d86a5f5d`,
+    domain: `sandbox07e339db2199484f844f2aedfc941e3d.mailgun.org`,
   });
 
 const payOrderEmailTemplate = (order) => {

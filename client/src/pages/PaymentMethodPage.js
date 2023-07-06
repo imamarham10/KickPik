@@ -25,7 +25,7 @@ export default function PaymentMethodPage() {
     navigate('/placeOrder');
   };
   return (
-    <div className="paymentmethod-container">
+    <div className="paymentmethod-container h-screen">
       <Helmet>
         <title>Payment Method</title>
       </Helmet>{' '}

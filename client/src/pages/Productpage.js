@@ -139,7 +139,7 @@ export default function Productpage() {
         <div className="flex">
           <Sidebar />
           <div className="flex-col pt-5 pb-5 pl-12 pr-12">
-            <div className="flex">
+            <div className="flex ">
               <div>
                 <img
                   src={product.image}
