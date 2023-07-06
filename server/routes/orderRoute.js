@@ -7,7 +7,7 @@ const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const Order = require("../models/orderModel");
 const User = require("../models/userModel");
-const { isAuth, isAdmin } = require("../util");
+const { isAuth, isAdmin, mailgun, payOrderEmailTemplate } = require("../util.js");
 const Product = require("../models/productModel");
 const mongoose = require("mongoose");
 
@@ -77,7 +77,10 @@ orderRouter.put(
   "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      'user',
+      'email name'
+    );
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
@@ -89,6 +92,23 @@ orderRouter.put(
       };
 
       const updatedOrder = await order.save();
+      mailgun()
+        .messages()
+        .send(
+          {
+            from: 'Amazona <amazona@mg.yourdomain.com>',
+            to: `${order.user.name} <${order.user.email}>`,
+            subject: `New order ${order._id}`,
+            html: payOrderEmailTemplate(order),
+          },
+          (error, body) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(body);
+            }
+          }
+        );
       res.send({ message: "Order Paid", order: updatedOrder });
     } else {
       res.status(404).send({ message: "Order Not Found" });
@@ -150,7 +170,8 @@ orderRouter.get(
           },
         },
       ]);
-      res.send({ users, orders, dailyOrders, productCategories });
+      //users , orders, dailyOrders, productCategories
+      res.send({ productCategories  });
     } catch (error) {
       console.error("Error in summary endpoint:", error);
       res.status(500).send({ message: "Internal Server Error" });

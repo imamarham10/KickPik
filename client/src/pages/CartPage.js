@@ -30,15 +30,15 @@ export default function CartPage() {
   };
 
   return (
-    <div>
+    <div className="h-screen">
       <Helmet>
         <title>Shopping Cart</title>
       </Helmet>
       <div className="cart-container">
         <div className="cart-text-container">
-          <h1 className="shopping-cart-text text-3xl font-semibold font-primary">
+          <div className="shopping-cart-text font-nunito text-3xl font-semibold font-primary">
             Shopping Cart
-          </h1>
+          </div>
         </div>
         {cartItems.length === 0 ? (
           <div>
@@ -64,14 +64,14 @@ export default function CartPage() {
                         {' '}
                         <Link
                           to={`/product/id/${item._id}`}
-                          className="item-list-a"
+                          className="item-list-a font-nunito font-extrabold"
                         >
-                          {item.name}
+                          <strong>{item.name}</strong>
                         </Link>
                       </div>
                       <div style={{ marginLeft: '20px', marginRight: '20px' }}>
                         <span>
-                          <strong>${item.price}</strong>
+                          <strong className="font-nunito">${item.price}</strong>
                         </span>
                       </div>
 
@@ -85,7 +85,7 @@ export default function CartPage() {
                         >
                           <i className="fas fa-minus-circle"></i>
                         </button>{' '}
-                        <span className="item-quantity">{item.quantity}</span>{' '}
+                        <strong className="item-quantity font-nunito">{item.quantity}</strong>{' '}
                         <button
                           disabled={item.quantity === item.countInStock}
                           className="button-plus"
@@ -113,11 +113,11 @@ export default function CartPage() {
 
             <div className="checkout-detail">
               <div className="checkout-text">
-                <h4>
+                <div className="font-nunito font-bold mb-10">
                   Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                   items) : $
                   {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
-                </h4>
+                </div>
               </div>
               <div>
                 <button
