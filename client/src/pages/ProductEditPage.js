@@ -90,7 +90,7 @@ export default function ProductEditScreen() {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       await axios.put(
-        `/api/products/${productId}`,
+        `https://kickpik-backend.vercel.app/api/products/${productId}`,
         {
           _id: productId,
           name,
@@ -124,7 +124,7 @@ export default function ProductEditScreen() {
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
       const { data } = await axios.post(
-        "/api/upload",
+        "https://kickpik-backend.vercel.app/api/upload",
         bodyFormData,
         {
           headers: {

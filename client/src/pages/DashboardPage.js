@@ -29,7 +29,7 @@ export default function DashboardPage() {
     const fetchData = async () => {
       try {
         console.log(userInfo.token);
-        const { data } = await axios.get('/api/orders/summary', {
+        const { data } = await axios.get('https://kickpik-backend.vercel.app/api/orders/summary', {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });

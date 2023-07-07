@@ -17,8 +17,6 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import Sidebar from "../components/Sidebar.js";
 import Loading from "../components/Loading.js";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import Form from "react-bootstrap/Form";
 import TextMessage from "../components/TextMessage.js";
 
 const reducer = (state, action) => {
@@ -47,18 +45,6 @@ export default function Productpage() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
-  const previousSlide = () => {
-    setCurrentSlide(
-      currentSlide === 0 ? product.images.length - 1 : currentSlide - 1
-    );
-  };
-
-  const nextSlide = () => {
-    setCurrentSlide(
-      currentSlide === product.images.length - 1 ? 0 : currentSlide + 1
-    );
-  };
-  const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
   const params = useParams();
   const { id } = params;
