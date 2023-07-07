@@ -46,6 +46,19 @@ export default function Productpage() {
   let reviewsRef = useRef();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
+  const previousSlide = () => {
+    setCurrentSlide(
+      currentSlide === 0 ? product.images.length - 1 : currentSlide - 1
+    );
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide(
+      currentSlide === product.images.length - 1 ? 0 : currentSlide + 1
+    );
+  };
+  const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
   const params = useParams();
   const { id } = params;
@@ -76,7 +89,9 @@ export default function Productpage() {
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`https://kickpik-backend.vercel.app/api/products/${product._id}`);
+    const { data } = await axios.get(
+      `https://kickpik-backend.vercel.app/api/products/${product._id}`
+    );
     // console.log(data);
     if (data.countInStock < quantity) {
       window.alert("Sorry. Product is out of stock");
@@ -139,10 +154,10 @@ export default function Productpage() {
         <div className="flex">
           <Sidebar />
           <div className="flex-col pt-5 pb-5 pl-12 pr-12">
-            <div className="flex max-sm:flex-col">
+            <div className="flex justify-between max-sm:flex-col">
               <div>
                 <img
-                  src={product.image}
+                  src={selectedImage || product.image}
                   alt={product.name}
                   className="productpage-image"
                 />
@@ -224,6 +239,26 @@ export default function Productpage() {
                         </button>
                       </div>
                     </div>
+                    <hr className="my-5"/>
+
+                    <div>
+                      <div className="flex mt-5 h-48 w-64">
+                        {[product.image, ...product.images].map((x) => (
+                          <div className="flex-col" key={x}>
+                            <div className="">
+                              <button
+                                className="thumbnail"
+                                type="button"
+                                variant="light"
+                                onClick={() => setSelectedImage(x)}
+                              >
+                                <img variant="top" src={x} alt="product" className="w-40 h-24"/>
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <div>
@@ -257,7 +292,9 @@ export default function Productpage() {
                           <Rating rating={review.rating} caption=" "></Rating>
                         </div>
                       </div>
-                      <div className="font-nunito">{review.createdAt.substring(0, 10)}</div>
+                      <div className="font-nunito">
+                        {review.createdAt.substring(0, 10)}
+                      </div>
                       <p className="font-nunito">{review.comment}</p>
                     </li>
                   ))}

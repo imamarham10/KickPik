@@ -69,11 +69,11 @@ export default function PlaceOrderPage() {
     }
   }, [cart, navigate]);
   return (
-    <div className="h-screen">
+    <div className="h-full max-sm:h-full">
       <Helmet>
         <title>Order Review</title>
       </Helmet>{' '}
-      <div className="row top">
+      <div className="row top my-10">
         <div className="col-2">
           <ul>
             <li>

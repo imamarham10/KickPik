@@ -1,7 +1,7 @@
 import React from 'react';
-import { ReactComponent as Error } from '../resources/error.svg';
+import { ReactComponent as Error } from '../resources/empty-cart.svg';
 
-function ErrorMessage(props) {
+function EmptyCartErrorMessage(props) {
   return (
     <div className={`alert alert-${props.variant || 'info'} `}>
       {props.children}
@@ -11,4 +11,4 @@ function ErrorMessage(props) {
     </div>
   );
 }
-export default ErrorMessage;
+export default EmptyCartErrorMessage;

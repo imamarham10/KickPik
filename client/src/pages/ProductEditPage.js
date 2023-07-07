@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Store } from "../Store";
 import { getError } from "../util.js";
+import Form from 'react-bootstrap/Form';
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/Message";
+import TextMessage from "../components/TextMessage";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -42,13 +44,17 @@ export default function ProductEditScreen() {
 
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [{ loading, error, loadingUpdate, errorUpdate, loadingUpload, errorUpload }, dispatch] = useReducer(reducer, {
+  const [
+    { loading, error, loadingUpdate, errorUpdate, loadingUpload, errorUpload },
+    dispatch,
+  ] = useReducer(reducer, {
     loading: true,
     error: "",
   });
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
+  const [images, setImages] = useState([]);
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [brand, setBrand] = useState("");
@@ -57,10 +63,13 @@ export default function ProductEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`https://kickpik-backend.vercel.app/api/products/${productId}`);
+        const { data } = await axios.get(
+          `https://kickpik-backend.vercel.app/api/products/${productId}`
+        );
         setName(data.name);
         setPrice(data.price);
         setImage(data.image);
+        setImages(data.images);
         setCategory(data.category);
         setCountInStock(data.countInStock);
         setBrand(data.brand);
@@ -81,12 +90,13 @@ export default function ProductEditScreen() {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       await axios.put(
-        `https://kickpik-backend.vercel.app/api/products/${productId}`,
+        `/api/products/${productId}`,
         {
           _id: productId,
           name,
           price,
           image,
+          images,
           category,
           brand,
           countInStock,
@@ -107,26 +117,43 @@ export default function ProductEditScreen() {
     }
   };
 
-  const uploadFileHandler = async (e) => {
+  const uploadFileHandler = async (e, forImages) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
-    bodyFormData.append('file', file);
+    bodyFormData.append("file", file);
     try {
-      dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('https://kickpik-backend.vercel.app/api/upload', bodyFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          authorization: `Bearer ${userInfo.token}`,
-        },
-      });
-      dispatch({ type: 'UPLOAD_SUCCESS' });
+      dispatch({ type: "UPLOAD_REQUEST" });
+      const { data } = await axios.post(
+        "/api/upload",
+        bodyFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: "UPLOAD_SUCCESS" });
 
-      window.alert('Image uploaded successfully');
-      setImage(data.secure_url);
+      // window.alert('Image uploaded successfully');
+      // setImage(data.secure_url);
+      if (forImages) {
+        setImages([...images, data.secure_url]);
+      } else {
+        setImage(data.secure_url);
+      }
+      window.alert("Image uploaded successfully. click Update to apply it");
     } catch (err) {
       window.alert(getError(err));
-      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+      dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
     }
+  };
+  const deleteFileHandler = async (fileName, f) => {
+    console.log(fileName, f);
+    console.log(images);
+    console.log(images.filter((x) => x !== fileName));
+    setImages(images.filter((x) => x !== fileName));
+    window.alert("Image removed successfully. click Update to apply it");
   };
   return (
     <div>
@@ -137,7 +164,9 @@ export default function ProductEditScreen() {
           </div>
         </div>
         {loadingUpdate && <Loading />}
-                {errorUpdate && <ErrorMessage variant="danger">{errorUpdate}</ErrorMessage>}
+        {errorUpdate && (
+          <ErrorMessage variant="danger">{errorUpdate}</ErrorMessage>
+        )}
         {loading ? (
           <Loading />
         ) : error ? (
@@ -192,8 +221,32 @@ export default function ProductEditScreen() {
                 onChange={uploadFileHandler}
               />
               {loadingUpload && <Loading />}
-                            {errorUpload && <ErrorMessage variant="danger">{errorUpload}</ErrorMessage>}
+              {errorUpload && (
+                <ErrorMessage variant="danger">{errorUpload}</ErrorMessage>
+              )}
             </div>
+            <Form.Group className="mb-3" controlId="additionalImage">
+            <Form.Label>Additional Images</Form.Label>
+            {images.length === 0 && <TextMessage>No image</TextMessage>}
+            <ul variant="flush">
+              {images.map((x) => (
+                <li key={x}>
+                  {x}
+                  <button variant="light" onClick={() => deleteFileHandler(x)}>
+                    <i className="fa fa-times-circle"></i>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="additionalImageFile">
+            <Form.Label>Upload Aditional Image</Form.Label>
+            <Form.Control
+              type="file"
+              onChange={(e) => uploadFileHandler(e, true)}
+            />
+            {loadingUpload && <Loading></Loading>}
+          </Form.Group>
             <div>
               <label htmlFor="category" className="font-nunito font-bold">
                 Category
