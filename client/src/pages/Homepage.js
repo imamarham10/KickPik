@@ -54,7 +54,7 @@ export default function Homepage() {
         <Helmet>
           <title>KickPik</title>
         </Helmet>
-        <h1>Featured Product</h1>
+        {/* <h1>Featured Product</h1> */}
         {loading ? (
           <div className="h-screen">
             <Loading />

@@ -472,6 +472,7 @@ main {
   width: 100%;
 }
 .productpage-description {
+  height: auto;
   color: rgb(100, 100, 100);
 }
 .productpage-rating {
